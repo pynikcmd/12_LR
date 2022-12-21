@@ -6,6 +6,7 @@
 # прародителем, и перехватывает исключения, чтобы вызвать стек.
 
 import sys
+import timeit
 
 
 class TailRecurseException(Exception):
@@ -34,3 +35,17 @@ def tail_call_optimized(g):
                     kwargs = e.kwargs
     func.__doc__ = g.__doc__
     return func
+
+@tail_call_optimized
+def fib(i, current=0, nextt=1):
+    if i == 0:
+        return current
+    else:
+        return fib(i - 1, nextt, current + nextt)
+
+
+if __name__ == '__main__':
+    start_time = timeit.default_timer()
+    fib(100)
+    print("Время на выполнение fib: ", timeit.default_timer() - start_time)
+    start_time = timeit.default_timer()
